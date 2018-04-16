@@ -71,8 +71,8 @@ def load_points(file_name, lighthouse="L", count=1, steps=1, dlimiter=' '):  # R
                 sensor_points = []
                 for k in range(0, 31):
                     if location_x[k] != 0 and location_y[k] != 0:  # Rejects data without a pair
-                        x = (location_x[k]/400000)*3.14159265359
-                        y = (location_y[k]/400000)*3.14159265359
+                        x = (location_x[k]/400000)*np.pi
+                        y = (location_y[k]/400000)*np.pi
                         point = [x, y]
                         sensor_points.append(point)
                         sensor_ids.append(k)

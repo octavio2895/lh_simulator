@@ -35,7 +35,7 @@ def cartesian2lighthouse(point):     # takes an array of cartesian coordinates (
     rtp[2] = np.arctan(point[2]/point[1])
     return np.asarray(rtp)
 
-model_points, normal_points = open_config("config.json")
+model_points, normal_points = open_config("data/config.json")
 
 first_position = np.array([0, 1, 0])
 second_position = np.array([0, 1, 0])

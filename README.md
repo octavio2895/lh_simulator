@@ -1,5 +1,28 @@
-# lh_simulator
+# lh_tools
 
-This simulator is a proof of concept. It's meant to be used as a tester for posers to be used in Libsurvive. https://github.com/cnlohr/libsurvive
+These are a series of functions to be ported and implemented on [LibSurvive](https://github.com/cnlohr/libsurvive/issues/8).
 
-The simulator works by transforming an object into spherical coordinates. By making this calculation at the beginning of the sweep, we can start a timing variable at zero and calculate the time it would take for the laser to hit the sensor if it were to stay fixed. By feeding this timing data into a path function, you can calculate the pose of the object at this new time. The timing variable is set to this new time. By calculating the angular difference within this 2 poses and a sensor and comparing it with a set tolerance, the program determines if the angular position of this sensor is precise enough. If it is, the program returns. Else, the timing variable is set again and the whole process repeats itself until the condition is met.
+For now, these are a proof of concept that shows some promise.
+
+simulator.py: generates data that simulates the operation of a lighthouse system. The model is not yet finished, 
+OOTX data and noise sources must be implemented.
+
+poser.py: its able to calculate the complete pose of an object, reprojects and calculates RMS error. 
+Latest test showed an RMS error of 420 ticks or 3.2 mRad. Only works with some data source since the parser needs to be updated.
+The principle of operation will be posted here soon.
+
+sim_tools.py: will contain the whole model of the lighthouse system. Its not being used right now.
+
+poser_tools.py: contains all functions needed to calculate pose from 2 data sets (model information and raw data).
+
+tools.py: contains parsers and helper functions. Most functions needs to be rewritten.
+
+/data/: contains data that will work with poser.py. Right now, it contains data shared by [@mwturvey](https://github.com/mwturvey) 
+on [LibSurvive](https://github.com/cnlohr/libsurvive/issues/8).
+
+ 
+## Principle of operation
+
+To be posted soon...
+
+## Examples
