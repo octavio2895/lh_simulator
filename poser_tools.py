@@ -65,7 +65,7 @@ def calc_pose(m_points, o_points, s_id, guess=array([3, 3, 3, 3]), verbose=False
     k = empty(4)
     k[0] = ((m_points[s_id[0]][0] - m_points[s_id[1]][0])**2) + ((m_points[s_id[0]][1] - m_points[s_id[1]][1])**2) + ((m_points[s_id[0]][2] - m_points[s_id[1]][2])**2)
     k[1] = ((m_points[s_id[2]][0] - m_points[s_id[1]][0])**2) + ((m_points[s_id[2]][1] - m_points[s_id[1]][1])**2) + ((m_points[s_id[2]][2] - m_points[s_id[1]][2])**2)
-    k[2] = ((m_points[s_id[0]][0] - m_points[s_id[2]][0])**2) + ((m_points[s_id[0]][1] - m_points[s_id[2]][1])**2) + ((m_points[s_id[0]][2] - m_points[s_id[2]][2])**2)
+    k[2] = ((m_points[s_id[3]][0] - m_points[s_id[2]][0])**2) + ((m_points[s_id[3]][1] - m_points[s_id[2]][1])**2) + ((m_points[s_id[3]][2] - m_points[s_id[2]][2])**2)
     k[3] = ((m_points[s_id[0]][0] - m_points[s_id[3]][0])**2) + ((m_points[s_id[0]][1] - m_points[s_id[3]][1])**2) + ((m_points[s_id[0]][2] - m_points[s_id[3]][2])**2)
 
     phi = []
