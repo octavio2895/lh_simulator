@@ -170,7 +170,7 @@ def load_points_new(file_name, lighthouse="L", count=1, steps=1, dlimiter=' '): 
                         sensor_points.append(point)
                         sensor_ids.append(k)
                 xyflag = 0
-                sorted_pulse = sorted(range(len(pulses)), key=lambda i: pulses[i], reverse=True)[:4]
+                sorted_pulse = sorted(range(len(pulses)), key=lambda i: pulses[i], reverse=True)[:]
                 valid_points = []
                 valid_ids = []
                 for k in sorted_pulse:
@@ -189,3 +189,82 @@ def load_points_new(file_name, lighthouse="L", count=1, steps=1, dlimiter=' '): 
                 pulse_y[int(sweep[4])] = int(sweep[7].strip())
                 location_y[int(sweep[4])] = int(sweep[6].strip()) #+ int(sweep[7])/2
     return all_points, all_ids
+
+
+def new_parser(file_name, lighthouse="L", device="HMD", count=1, steps=1, dlimiter=' '):
+    with open(file_name, newline='') as csvfile:  # Loads csv
+        data = csv.reader(csvfile, delimiter=dlimiter, quotechar='|')
+        current_axis = ""
+        pose_count = 0
+        xyflag = 0
+        x_points = zeros(32)
+        y_points = zeros(32)
+        ids = []
+        all_ids = []
+        points = []
+        all_points = []
+        for row in data:
+            if row[1] == device and row[2] == lighthouse and int(row[4])>=0:
+                if row[3] != current_axis:
+                    current_axis = row[3]
+                    xyflag += 1
+                if xyflag > 2:
+                    pose_count += 1
+                    xyflag = 1
+                    for i in range(32):
+                        if x_points[i] != 0 and y_points[i] != 0:
+                            ids.append(i)
+                            points.append([x_points[i], y_points[i]])
+                    all_points.append(points)
+                    all_ids.append(ids)
+                    ids = []
+                    points = []
+                    x_points = zeros(32)
+                    y_points = zeros(32)
+                if pose_count >= count:
+                    break
+                if current_axis == 'X':
+                    x_points[int(row[4])] = (int(row[6])/400000) * np.pi
+                elif current_axis == 'Y':
+                    y_points[int(row[4])] = (int(row[6])/400000) * np.pi
+        return all_points, all_ids
+
+
+def new_parser_raw(file_name, lighthouse="L", device="HMD", count=1, steps=1, dlimiter=' '):
+    with open(file_name, newline='') as csvfile:  # Loads csv
+        data = csv.reader(csvfile, delimiter=dlimiter, quotechar='|')
+        current_axis = ""
+        pose_count = 0
+        xyflag = 0
+        x_points = zeros(32)
+        y_points = zeros(32)
+        ids = []
+        all_ids = []
+        points = []
+        all_points = []
+        for row in data:
+            if row[1] == device and row[2] == lighthouse and int(row[4]) >= 0:
+                if row[3] != current_axis:
+                    current_axis = row[3]
+                    xyflag += 1
+                if xyflag > 2:
+                    pose_count += 1
+                    xyflag = 1
+                    for i in range(32):
+                        if x_points[i] != 0 and y_points[i] != 0:
+                            ids.append(i)
+                            points.append([x_points[i], y_points[i]])
+                    all_points.append(points)
+                    all_ids.append(ids)
+                    ids = []
+                    points = []
+                    x_points = zeros(32)
+                    y_points = zeros(32)
+                if pose_count >= count:
+                    break
+                if current_axis == 'X':
+                    x_points[int(row[4])] = int(row[6])
+                elif current_axis == 'Y':
+                    y_points[int(row[4])] = int(row[6])
+        return all_points, all_ids
+

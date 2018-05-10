@@ -71,11 +71,16 @@ Once both data sets are centered on the same point, we can find rotation using S
 The cross-covariance matrix is easily calculated by transposing a data set and multiplying it with the other data set. This is fed into SVD when the matrix is decomposed into U, V and S. The rotational matrix is calculated by transposing V and U and multiplying them together. Multiplying this rotational matrix with a centroid you rotate its reference frame. Subtracting this with the other centroid will return the translation vector.
 
 ###Potential Issues - Fixes
-- The rotation is not calculated about the origin but on an arbitrary centroid. This will probably contribute to error since reprojection is rotated about the origin. This can be fixed by reprojecting the origin and redoing the whole process again but using the origin rather than a centroid. It may be possible to find a function that will change the rotation center. Another solution is to create yet another system of equations in order to solver for rho theta and phi of the origin.
+- <s>The rotation is not calculated about the origin but on an arbitrary centroid. This will probably contribute to error since reprojection is rotated about the origin. This can be fixed by reprojecting the origin and redoing the whole process again but using the origin rather than a centroid. It may be possible to find a function that will change the rotation center. Another solution is to create yet another system of equations in order to solver for rho theta and phi of the origin.</s> KINDA DONE: The difference is not significant to warrant the compute time. It may even be detremental to the calculation since it requires a solver.
 - The resulting vector and rotational vector are referenced to lighthouse not the world coordinates.
-- The error gained when calculating the remaining radii can throw off the pose, particularly the rotation. This must be solved.
-- Calculating all radii in a single system of equations could increase precision. This must be tested
+- <s>The error gained when calculating the remaining radii can throw off the pose, particularly the rotation. This must be solved.</s> DONE: Figured a way to calculate the correct radii that eliminates iterations. The equation will sometimes create a complex number but thats mitigated by making sure that the take the absolute of the expresion under the square root. This should be test further.
+- <s>Calculating all radii in a single system of equations could increase precision. This must be tested</s> DONE: This increased the compute time dramatically and the error actually increased. This will not be implemented.
 - The poser should apply OOTX data to increase precision.
 
 
 ## Examples
+
+
+![poser_test_08](https://i.makeagif.com/media/5-05-2018/g-FN9M.gif)
+
+Green is raw data, blue is reprojection and red is the reprojection of the raw data. The average rms reprojection error is 440 ticks or 0.0034 radians and the average compute time is 17ms per frame
